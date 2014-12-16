@@ -14,21 +14,6 @@ object SporesBuild extends Build {
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.1" cross CrossVersion.full)
   )
 
-  lazy val root = Project(
-    id = "spores",
-    base = file(".")
-  )
-
-  lazy val core = Project(
-    id = "spores-core",
-    base = file("core")
-  )
-
-  lazy val pickling = Project(
-    id = "spores-pickling",
-    base = file("spores-pickling")
-  ) dependsOn(core)
-
   override lazy val settings =
     super.settings ++
     buildSettings
