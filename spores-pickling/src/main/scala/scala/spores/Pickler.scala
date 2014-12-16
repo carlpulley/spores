@@ -13,7 +13,7 @@ object SporePickler {
         : SPickler[Spore[T, R] { type Captured = U }] = macro genSporePicklerImpl[T, R, U]
 
   def genSporePicklerImpl[T: c.WeakTypeTag, R: c.WeakTypeTag, U: c.WeakTypeTag]
-        (c: Context)(tag: c.Tree, format: c.Tree, cPickler: c.Tree, cUnpickler: c.Tree, cTag: c.Tree): c.Tree = {
+        (c: Context)(tag: c.Expr[FastTypeTag[Spore[T, R]]], format: c.Expr[PickleFormat], cPickler: c.Expr[SPickler[U]], cUnpickler: c.Expr[Unpickler[U]], cTag: c.Expr[FastTypeTag[U]]): c.Expr[SPickler[Spore[T, R] { type Captured = U }]] = {
     import c.universe._
     import definitions.ArrayClass
 
@@ -29,7 +29,7 @@ object SporePickler {
 
     //TODO: check if U is a tuple
 
-    val numVarsCaptured = utpe.typeArgs.size
+    //val numVarsCaptured = utpe.typeArgs.size
     // println(s"numVarsCaptured = $numVarsCaptured")
     val sporeTypeName = newTypeName("SporeC1")
 
@@ -37,7 +37,7 @@ object SporePickler {
 
     val picklerUnpicklerName = c.fresh(newTermName("SporePicklerUnpickler"))
 
-    q"""
+    c.Expr[SPickler[Spore[T, R] { type Captured = U }]](q"""
       val capturedPickler = $cPickler
       val capturedUnpickler = $cUnpickler
       object $picklerUnpicklerName extends scala.pickling.SPickler[Spore[$ttpe, $rtpe] { type Captured = $utpe }]
@@ -95,7 +95,7 @@ object SporePickler {
         }
       }
       $picklerUnpicklerName
-    """
+    """)
   }
 
   // TODO: probably need also implicit macro for SPickler[Spore[T, R] { type Captured = U }]
@@ -105,7 +105,7 @@ object SporePickler {
         : SPickler[SporeWithEnv[T, R] { type Captured = U; val className: String }] = macro genSporeCMPicklerImpl[T, R, U]
 
   def genSporeCMPicklerImpl[T: c.WeakTypeTag, R: c.WeakTypeTag, U: c.WeakTypeTag]
-        (c: Context)(tag: c.Tree, format: c.Tree, cPickler: c.Tree, cUnpickler: c.Tree, cTag: c.Tree): c.Tree = {
+        (c: Context)(tag: c.Expr[FastTypeTag[Spore[T, R]]], format: c.Expr[PickleFormat], cPickler: c.Expr[SPickler[U]], cUnpickler: c.Expr[Unpickler[U]], cTag: c.Expr[FastTypeTag[U]]): c.Expr[SPickler[SporeWithEnv[T, R] { type Captured = U; val className: String }]] = {
     import c.universe._
     import definitions.ArrayClass
 
@@ -125,7 +125,7 @@ object SporePickler {
 
     //TODO: check if U is a tuple
 
-    val numVarsCaptured = utpe.typeArgs.size
+    //val numVarsCaptured = utpe.typeArgs.size
     // println(s"numVarsCaptured = $numVarsCaptured")
     val sporeTypeName = newTypeName("SporeWithEnv")
 
@@ -133,7 +133,7 @@ object SporePickler {
 
     val picklerUnpicklerName = c.fresh(newTermName("SporePicklerUnpickler"))
 
-    q"""
+    c.Expr[SPickler[SporeWithEnv[T, R] { type Captured = U; val className: String }]](q"""
       val capturedPickler = $cPickler
       val capturedUnpickler = $cUnpickler
       object $picklerUnpicklerName extends scala.pickling.SPickler[SporeWithEnv[$ttpe, $rtpe] { type Captured = $utpe; val className: String }]
@@ -190,13 +190,13 @@ object SporePickler {
         }
       }
       $picklerUnpicklerName
-    """
+    """)
   }
 
   implicit def genSporeUnpickler[T, R](implicit format: PickleFormat): Unpickler[Spore[T, R]] =
     macro genSporeUnpicklerImpl[T, R]
 
-  def genSporeUnpicklerImpl[T: c.WeakTypeTag, R: c.WeakTypeTag](c: Context)(format: c.Tree): c.Tree = {
+  def genSporeUnpicklerImpl[T: c.WeakTypeTag, R: c.WeakTypeTag](c: Context)(format: c.Expr[PickleFormat]): c.Expr[Unpickler[Spore[T, R]]] = {
     import c.universe._
     import definitions.ArrayClass
 
@@ -215,7 +215,7 @@ object SporePickler {
 
     val unpicklerName = c.fresh(newTermName("SporeUnpickler"))
 
-    q"""
+    c.Expr[Unpickler[Spore[T, R]]](q"""
       object $unpicklerName extends scala.pickling.Unpickler[Spore[$ttpe, $rtpe]] {
         val format = null // unused
         def unpickle(tag: => scala.pickling.FastTypeTag[_], reader: PReader): Any = {
@@ -247,7 +247,7 @@ object SporePickler {
         }
       }
       $unpicklerName
-    """
+    """)
   }
 
 }
