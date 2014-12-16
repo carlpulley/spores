@@ -34,8 +34,7 @@ object SporesBuild extends Build {
     buildSettings
 
   lazy val defaultSettings = buildSettings ++ Seq(
-    scalacOptions in Compile ++= Seq("-encoding", "UTF-8", "-target:jvm-1.6", "-deprecation", "-feature", "-unchecked", "-Xlog-reflective-calls", "-Xlint"),
-    javaOptions ++= Seq("-Dspores.debug=true")
+    scalacOptions in Compile ++= Seq("-encoding", "UTF-8", "-target:jvm-1.6", "-deprecation", "-feature", "-unchecked", "-Xlog-reflective-calls", "-Xlint")
   )
 
 }
