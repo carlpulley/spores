@@ -8,7 +8,10 @@ object SporesBuild extends Build {
   lazy val buildSettings = Seq(
     organization := "org.scala-lang.modules",
     version      := "0.1.0-SNAPSHOT",
-    scalaVersion := "2.11.2"
+    scalaVersion := "2.10.4",
+    resolvers += Resolver.sonatypeRepo("snapshots"),
+    resolvers += Resolver.sonatypeRepo("releases"),
+    addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.1" cross CrossVersion.full)
   )
 
   lazy val root = Project(
@@ -30,8 +33,9 @@ object SporesBuild extends Build {
     super.settings ++
     buildSettings
 
-  lazy val defaultSettings = Seq(
-    scalacOptions in Compile ++= Seq("-encoding", "UTF-8", "-target:jvm-1.6", "-deprecation", "-feature", "-unchecked", "-Xlog-reflective-calls", "-Xlint")
+  lazy val defaultSettings = buildSettings ++ Seq(
+    scalacOptions in Compile ++= Seq("-encoding", "UTF-8", "-target:jvm-1.6", "-deprecation", "-feature", "-unchecked", "-Xlog-reflective-calls", "-Xlint"),
+    javaOptions ++= Seq("-Dspores.debug=true")
   )
 
 }

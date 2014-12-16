@@ -30,7 +30,7 @@ class ImplicitConversionSpec {
         new Mappable(f(x).x)
     }
     val m = new Mappable("hello")
-    val m2: Mappable[Int] = m.map(s => s.length)
+    val m2: Mappable[Int] = m.map((s: String) => s.length)
   }
 
   // this should be rejected
