@@ -19,4 +19,6 @@ object SporesBuild extends Build {
     scalacOptions in Compile ++= Seq("-encoding", "UTF-8", "-target:jvm-1.6", "-deprecation", "-feature", "-unchecked", "-Xlog-reflective-calls", "-Xlint")
   )
 
+  resolvers += Resolver.sonatypeRepo("snapshots")
+
 }
