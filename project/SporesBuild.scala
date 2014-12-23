@@ -8,10 +8,7 @@ object SporesBuild extends Build {
   lazy val buildSettings = Seq(
     organization := "org.scala-lang.modules",
     version      := "0.1.0-SNAPSHOT",
-    scalaVersion := "2.10.4",
-    resolvers += Resolver.sonatypeRepo("snapshots"),
-    resolvers += Resolver.sonatypeRepo("releases"),
-    addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.1" cross CrossVersion.full)
+    scalaVersion := "2.11.2"
   )
 
   override lazy val settings =

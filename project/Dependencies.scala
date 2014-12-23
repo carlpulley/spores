@@ -4,7 +4,7 @@ import sbt._
 
 object Dependencies {
 
-  val scalaVersion = "2.10.4"
+  val scalaVersion = "2.11.2"
 
   val scalaReflect = "org.scala-lang" % "scala-reflect" % scalaVersion % "provided"
   val scalaCompiler = "org.scala-lang" % "scala-compiler" % scalaVersion % "test"
@@ -14,9 +14,7 @@ object Dependencies {
 
   val scalaPickling = "org.scala-lang" %% "scala-pickling" % "0.9.1"
 
-  val quasiquotes = "org.scalamacros" %% "quasiquotes" % "2.0.1"
-
-  val core = Seq(scalaReflect, scalaCompiler, quasiquotes, junit, junitIntf)
+  val core = Seq(scalaReflect, scalaCompiler, junit, junitIntf)
 
   val pickling = core ++ Seq(scalaPickling)
 
